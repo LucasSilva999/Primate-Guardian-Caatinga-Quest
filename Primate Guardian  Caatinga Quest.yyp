@@ -80,6 +80,7 @@
     {"id":{"name":"sPlayer_run_left","path":"sprites/sPlayer_run_left/sPlayer_run_left.yy",},},
     {"id":{"name":"sPlayer_run_right","path":"sprites/sPlayer_run_right/sPlayer_run_right.yy",},},
     {"id":{"name":"sPlayer_run_up","path":"sprites/sPlayer_run_up/sPlayer_run_up.yy",},},
+    {"id":{"name":"Sprite23","path":"sprites/Sprite23/Sprite23.yy",},},
     {"id":{"name":"sTiles_ground","path":"sprites/sTiles_ground/sTiles_ground.yy",},},
     {"id":{"name":"Tl_Ground","path":"tilesets/Tl_Ground/Tl_Ground.yy",},},
   ],

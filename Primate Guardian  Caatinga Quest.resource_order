@@ -50,5 +50,6 @@
     {"name":"sPlayer_run_left","order":3,"path":"sprites/sPlayer_run_left/sPlayer_run_left.yy",},
     {"name":"sPlayer_run_right","order":1,"path":"sprites/sPlayer_run_right/sPlayer_run_right.yy",},
     {"name":"sPlayer_run_up","order":2,"path":"sprites/sPlayer_run_up/sPlayer_run_up.yy",},
+    {"name":"Sprite23","order":2,"path":"sprites/Sprite23/Sprite23.yy",},
   ],
 }
