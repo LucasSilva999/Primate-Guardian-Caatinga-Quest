@@ -2,6 +2,7 @@
 state_idle = new state()
 state_walk = new state()
 state_attack = new state()
+state_roll = new state()
 
 #region Estado_idle
 state_idle.start = function()
@@ -24,11 +25,14 @@ state_idle.running = function()
 	{
 		state_trade(state_attack)
 	}
+	if (roll)
+	{
+		state_trade(state_roll)
+	}
 	
 }
 
 #endregion
-
 
 #region Estado_walk
 state_walk.start = function()
@@ -58,11 +62,17 @@ state_walk.running = function()
 	{
 		state_trade(state_attack)
 	}
+	if (roll)
+	{
+		state_trade(state_roll)
+	}
 	
 	
 
 }
 #endregion
+
+#region Estado_attack
 state_attack.start = function()
 {
 	dirm = (point_direction(x,y,mouse_x,mouse_y)  div 90)
@@ -84,9 +94,29 @@ state_attack.running = function()
 		  state_trade(state_idle)
 	}
 }
-#region Estado_attack
+#endregion
+
+#region Estado_rolamento
+state_roll.start = function()
+{
+	dir = (point_direction(0,0,right - left,down - up) div 90 )
+	
+	image_index = 0
 	
 
+}
+state_roll.running = function()
+{
+	dir = (point_direction(0,0,right - left,down - up) div 90 )
+	
+	hspd = lengthdir_x(dir,dash_dir)
+	vspd = lengthdir_y(dir,dash_dir)
+	
+	if end_animation()
+	{
+		state_trade(state_idle)
+	}
+}
 #endregion
 
 #region Iniciando variaveis
@@ -97,6 +127,7 @@ down = noone
 left = noone
 right = noone
 attack = noone
+roll = noone
 
 //Var de movimento
 hspd = 0
@@ -108,6 +139,7 @@ spd = 2
 // direçoes 
 dir = 0
 dirm = 0
+dash_dir = 4
 #endregion
 
 start_state(state_idle)
