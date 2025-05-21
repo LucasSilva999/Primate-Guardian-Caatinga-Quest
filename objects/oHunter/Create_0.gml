@@ -83,12 +83,23 @@ state_walk.running = function()
 #region State_attack
 state_attack.start = function()
 {
-
-
+	
+	sprite_index= sHunter_left_attack
+	image_index=0
 }
 
 state_attack.running = function()
 {
+	
+	if end_animation()
+	{
+		state_trade(state_idle)
+	}
+}
+
+state_attack.ending = function()
+{
+	target = noone
 
 }
 #endregion
@@ -155,7 +166,38 @@ state_hunt.running = function()
 	
 	mp_potential_step(target.x,target.y,1,oColision)
 	
-
+	var _dist = point_distance(x,y,target.x,target.y)
+	if (_dist <= 30)
+	{
+		state_trade(state_attack)
+	}
+	
+	var _n = instance_number(object_index)
+	
+	for (var i = 0; i < _n; i++)
+	{
+		var _slime = instance_find(object_index,i)
+		
+		if (_slime == id)
+		{
+			
+		}
+		else
+		{
+			if (_slime.target != target)
+			{
+				var _dist = point_distance(x,y,_slime.x,_slime.y)
+				if (_dist < 100)
+				{
+				
+					with(_slime)
+					{
+						state_trade(state_hunt)
+					}
+				}
+			}
+		}
+	}
 }
 
 #endregion

@@ -1,0 +1,1 @@
+list_enemy = array_create(0)

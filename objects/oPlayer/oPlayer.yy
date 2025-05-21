@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Player",
-    "path":"folders/Objetos/Player/Identity/Player.yy",
+    "path":"folders/Objetos/Identity/Player.yy",
   },
   "parentObjectId":null,
   "persistent":true,

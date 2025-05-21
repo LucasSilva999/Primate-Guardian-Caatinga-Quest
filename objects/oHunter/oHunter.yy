@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Enemys",
-    "path":"folders/Objetos/Player/Identity/Enemys.yy",
+    "path":"folders/Objetos/Identity/Enemys.yy",
   },
   "parentObjectId":{
     "name":"oParEnemys",
