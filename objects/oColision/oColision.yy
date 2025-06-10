@@ -6,8 +6,8 @@
   "name":"oColision",
   "overriddenProperties":[],
   "parent":{
-    "name":"Manager",
-    "path":"folders/Objetos/Manager.yy",
+    "name":"Colision",
+    "path":"folders/Objetos/Manager/Colision.yy",
   },
   "parentObjectId":null,
   "persistent":false,

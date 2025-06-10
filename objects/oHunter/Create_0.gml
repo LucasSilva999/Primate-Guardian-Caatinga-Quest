@@ -1,39 +1,62 @@
 event_inherited();
-time_state = game_get_speed(gamespeed_fps) * 5
-timer_state = time_state
 
+
+//walk var
 destiny_x = 0
 destiny_y = 0
 
+//status var
+damage_value = 1
+poise_max = 10
+life = 2
+
+//hunt var
 dist_aggro= 70
 dist_desaggro=70
 target = noone
 
 state_hunt = new state()
 
+#region State_Ia
+state_ia.start = function()
+{
+	var _next_state = choose(state_idle,state_walk)
+	
+	if _next_state == state_walk
+	{
+		
+		state_trade(state_walk)
+		
+	}else if _next_state == state_idle
+	{
+		state_trade(state_idle)
+	}
+	
+
+}
+state_ia.running = function()
+{
+
+
+}
+
+#endregion
+
 #region State_idle
 state_idle.start = function()
 {
 	
-
-		
-	image_speed = 0
-	image_index = 0 
 	
-	timer_state = time_state
+	image_index = 0 
+	image_speed = 0
+	
 }
 state_idle.running = function()
 {
 	
 	
-	timer_state--
 	
-	var _time = irandom(timer_state)
-	if (_time <= 0)
-	{
-		var _state_new = choose(state_idle,state_idle,state_walk)
-		state_trade(_state_new)
-	} 
+
 	if(distance_to_object(oPlayer)<= dist_aggro)
 	{
 		state_trade(state_hunt)
@@ -45,29 +68,29 @@ state_idle.running = function()
 state_walk.start = function()
 {
  
+ 
 	destiny_x = irandom_range(0,room_width)
 	destiny_y = irandom_range(0,room_height)
 	
+	var _dir = point_direction(x, y, destiny_x,destiny_y)
 	
+	
+	
+	hspd = lengthdir_x(spd, _dir)
+	vspd = lengthdir_y(spd, _dir)
+
 	image_speed = 1
 	image_index = 0
 	
-	timer_state = time_state
-		
+
 }
 state_walk.running = function()
 {
 	
 	
 	
-	timer_state--
-	var _time = irandom(timer_state)
-	if (_time <= 0)
-	{
-		var _state_new = choose(state_idle,state_walk)
-		
-		state_trade(_state_new)
-	}
+	var _dir = point_direction(x, y, destiny_x,destiny_y)
+
 	
 	if(distance_to_object(oPlayer)<= dist_aggro)
 	{
@@ -75,7 +98,7 @@ state_walk.running = function()
 	}
 	
 	
-	mp_potential_step_object(destiny_x,destiny_y,1,oColision)
+	mp_potential_step_object(hspd,vspd,0.5,oColision)
 }
 
 #endregion 
@@ -84,23 +107,34 @@ state_walk.running = function()
 state_attack.start = function()
 {
 	
+	
 	sprite_index= sHunter_left_attack
 	image_index=0
 }
 
 state_attack.running = function()
 {
+	if(damage == noone && image_index >= 2)
+	{
+		damage = instance_create_depth(x-20,y,depth,oHitbox_enemy)
+		damage.damage = damage_value
+	}
 	
 	if end_animation()
 	{
-		state_trade(state_idle)
+		state_trade(state_ia)
 	}
 }
 
 state_attack.ending = function()
 {
 	target = noone
-
+	
+	if (instance_exists(damage))
+	{
+		instance_destroy(damage)
+	}
+	damage = noone
 }
 #endregion
 
@@ -112,19 +146,24 @@ state_hurt.start = function()
 }
 state_hurt.running = function()
 {
-	if end_animation()
-	{	
-		if (life) > 0
+	
+		if (life > 0)
 		{
-			state_trade(state_idle)
+			state_trade(state_ia)
 		
 		}else
 		{
 			state_trade(state_dead)
 		}
+	
+}
+state_hurt.ending = function()
+{
+	if (poise < 1)
+	{
+		poise = poise_max
 	}
 }
-
 #endregion
 
 #region State_dead
@@ -132,13 +171,14 @@ state_dead.start = function()
 {
 	
 	image_index = 0
+	
+	dead = true
 }
 state_dead.running = function()
 {
-	if end_animation()
-	{
+	
 		instance_destroy()
-	}
+	
 }
 #endregion
 
@@ -192,7 +232,10 @@ state_hunt.running = function()
 				
 					with(_slime)
 					{
-						state_trade(state_hunt)
+						if (state_curret != state_dead)
+						{
+							state_trade(state_hunt)
+						}
 					}
 				}
 			}
@@ -202,5 +245,5 @@ state_hunt.running = function()
 
 #endregion
 
-start_state(state_idle)
+start_state(state_ia)
 

@@ -6,6 +6,19 @@ state_roll = new state()
 state_hurt = new state()
 state_dead = new state()
 
+#region Damage_handler
+damage_handler = function(_damage = 1)
+{
+	if (state_curret == state_dead)return;
+	life -= _damage 
+	
+	if (life <= 0)
+	{
+		state_trade(state_dead)
+		return
+	}
+}
+#endregion
 
 #region Estado_idle
 state_idle.start = function()
@@ -37,6 +50,7 @@ state_idle.running = function()
 		state_trade(state_roll)
 	}
 	
+	
 }
 
 #endregion
@@ -45,6 +59,7 @@ state_idle.running = function()
 state_walk.start = function()
 {
 	dir = (point_direction(0,0,right - left,down - up) div 45) mod 8
+	
 		
 	sprite_index = define_sprite8(dir, sPlayer_run_up, sPlayer_run_down,sPlayer_run_right,sPlayer_run_left,sPlayer_run_northwest,sPlayer_run_northeast,sPlayer_run_southwest,sPlayer_run_southeast)
 	
@@ -55,6 +70,7 @@ state_walk.start = function()
 state_walk.running = function()
 {
 	dir = (point_direction(0,0,hspd,vspd) div 45 ) mod 8
+	sprite_index = define_sprite8(dir, sPlayer_run_up, sPlayer_run_down,sPlayer_run_right,sPlayer_run_left,sPlayer_run_northwest,sPlayer_run_northeast,sPlayer_run_southwest,sPlayer_run_southeast)
 	
 	
 	vspd = (down - up) * spd
@@ -82,28 +98,40 @@ state_walk.running = function()
 #region Estado_attack
 state_attack.start = function()
 {
-	dirm = (point_direction(x,y,mouse_x,mouse_y)  div 90)
 	
-	sprite_index = define_sprite(dirm, sPlayer_attack_up, sPlayer_attack_down, sPlayer_attack_right, sPlayer_attack_left )
+		dirm = (point_direction(x,y,mouse_x,mouse_y)  div 90)
+	    sprite_index = define_sprite(dirm, sPlayer_attack_up, sPlayer_attack_down, sPlayer_attack_right, sPlayer_attack_left )
+		image_index = 0
+		 
 	
-	image_index = 0
 	
 	hspd = 0
 	vspd = 0
-
-	var _x = x + lengthdir_x(16, dir * 90)
-	var _y = y + lengthdir_y(16, dir * 90)
-
-	
-	damage = instance_create_depth(_x,_y,depth, oHitbox)
-	
-	
 	
 }
 
 state_attack.running = function()
 {
-	dirm = (point_direction(x,y,mouse_x,mouse_y) div 90)
+	if (image_index >= 4 && my_damage == noone)
+	{
+		if gamepad_is_connected(global.gamepad_id)
+		{
+			var _x = x + lengthdir_x(16, dir * 90)
+			var _y = y + lengthdir_y(16, dir * 90)
+
+			my_damage = instance_create_depth(_x,_y,depth, oHitbox)
+			my_damage.damage_poise = damage_poise
+		}
+		else
+		{	
+		var _x = x + lengthdir_x(16, dirm * 90)
+		var _y = y + lengthdir_y(16, dirm * 90)
+
+		my_damage = instance_create_depth(_x,_y,depth, oHitbox)
+		my_damage.damage_poise = damage_poise
+		
+		}
+	}
 	
 	if end_animation()
 	{
@@ -113,8 +141,11 @@ state_attack.running = function()
 
 state_attack.ending = function()
 {
-	instance_destroy(damage)
-
+	if (instance_exists(my_damage))
+	{
+		instance_destroy(my_damage)
+	}
+	my_damage = noone
 }
 #endregion
 
@@ -148,10 +179,20 @@ state_hurt.start = function()
 	dir = (point_direction(0,0,right - left, down - up)div 90)
 
 	image_index = 0
+	
+	vspd = 0
+	hspd = 0
+	
+	
+	
 }		
 state_hurt.running = function()
 {
-
+	if end_animation()
+	{
+		state_trade(state_idle)
+	}
+	
 
 }				
 #endregion
@@ -161,19 +202,23 @@ state_dead.start = function()
 {
 	dir = (point_direction(0,0,right - left, down - up)div 90)
 	
-	sprite_index = define_sprite(sPlayer_dead_up,sPlayer_dead_down,sPlayer_dead_right,sPlayer_dead_left)
+	sprite_index = define_sprite(dir,sPlayer_dead_up,sPlayer_dead_down,sPlayer_dead_right,sPlayer_dead_left)
 	image_index = 0
+	imageindex = image_index
 
 }
 state_dead.running = function()
 {
-
+	if end_animation()
+	{
+		image_index = image_number - 1
+	}
 }
 #endregion
 
 #region Iniciando variaveis
 //controles
-up = noone
+up = noone 
 down = noone
 left = noone
 right = noone
@@ -184,14 +229,20 @@ roll = noone
 hspd = 0
 vspd = 0
 
+
+
 //status
 spd = 2
-damage = noone
+my_damage = noone
+damage_poise = 8
+max_life = 2
+life = max_life
 
 // direçoes 
 dir = 0
 dirm = 0
 dash_dir = 4
+last_dir = 0
 #endregion
 
 start_state(state_idle)

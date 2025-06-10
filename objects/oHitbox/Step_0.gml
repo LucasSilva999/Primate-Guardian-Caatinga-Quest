@@ -15,7 +15,10 @@ for (var i = 0; i < ds_list_size(_list); i++)
 		
 		with(_actual)
 		{
-			state_trade(state_hurt) 
+			if (!dead)
+			{
+				damage_handler(, other.damage_poise)
+			}
 		}
 	}
 }

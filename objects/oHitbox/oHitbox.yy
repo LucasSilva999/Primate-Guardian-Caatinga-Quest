@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Attacks",
-    "path":"folders/Objetos/Attacks.yy",
+    "path":"folders/Objetos/Identity/Player/Attacks.yy",
   },
   "parentObjectId":null,
   "persistent":false,

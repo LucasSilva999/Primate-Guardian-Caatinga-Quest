@@ -34,7 +34,7 @@ function state() constructor
  
 function define_sprite(_dir = 0, _sprite_up,_sprite_down,_sprite_right,_sprite_left)
 {
-	var _sprite
+	var _sprite;
 	
 	switch(_dir)
 	{
