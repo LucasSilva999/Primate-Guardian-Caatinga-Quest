@@ -5,6 +5,7 @@ state_attack = new state()
 state_dash = new state()
 state_hurt = new state()
 state_dead = new state()
+state_cure = new state()
 
 #region Damage_handler
 damage_handler = function(_damage = 1)
@@ -49,6 +50,10 @@ state_idle.running = function()
 	if (dash)
 	{
 		state_trade(state_dash)
+	}
+	if (cure)
+	{
+		state_trade(state_cure)
 	}
 	
 	
@@ -158,7 +163,7 @@ state_attack.ending = function()
 }
 #endregion
 
-#region Estado_rolamento
+#region Estado_dash
 state_dash.start = function()
 {
     sPlayer_dash_northeast = sPlayer_dash_up;
@@ -180,20 +185,15 @@ state_dash.start = function()
     }
 
     
-	
-	//peraainda
-	
     sprite_index = define_sprite8(dir, sPlayer_dash_up, sPlayer_dash_down, sPlayer_dash_right, sPlayer_dash_left, sPlayer_dash_northeast, sPlayer_dash_northwest, sPlayer_dash_southeast, sPlayer_dash_southwest);
     image_index = 0;
-	
-	
 	
 }
 
 state_dash.running = function()
 {
 
-	if image_index < 5
+	if (image_index < 5)
 	{
 		hspd = 0
 		vspd = 0
@@ -227,17 +227,44 @@ state_dash.ending = function()
 
 #endregion
 
+#region Estado_cure
+state_cure.start = function()
+{
+	
+	dir = (point_direction(0,0,right - left, down - up) div 90)
+	
+	image_index = 0
+	
+	hspd = 0
+	vspd = 0
+	
+	if (cure_amount > 0)
+	{
+		cure_amount -= 1
+		life += cure_val
+	}
+}
+state_cure.running = function()
+{
+	if end_animation()
+	{
+		state_trade(state_idle)
+	}
+
+}
+#endregion
+
 #region Estado_hurt
 state_hurt.start = function()
 {
 	dir = (point_direction(0,0,right - left, down - up)div 90)
 
+	take_dmg = false
+	
 	image_index = 0
 	
 	vspd = 0
 	hspd = 0
-	
-	
 	
 }		
 state_hurt.running = function()
@@ -248,7 +275,11 @@ state_hurt.running = function()
 	}
 	
 
-}				
+}
+state_hurt.ending = function()
+{
+	take_dmg = true
+}
 #endregion
 
 #region Estado_dead
@@ -278,6 +309,7 @@ left = noone
 right = noone
 attack = noone
 dash = noone
+cure = noone
 
 //Var de movimento
 hspd = 0
@@ -289,7 +321,7 @@ vspd = 0
 spd = 2
 my_damage = noone
 damage_poise = 8
-max_life = 2
+max_life = 10
 life = max_life
 
 // direçoes 
@@ -300,6 +332,10 @@ last_dir = 0
 //dash
 dash_dir = noone
 dash_spd = 2
+
+//cure
+cure_val = 1
+cure_amount = 2
 
 //invicibilidade
 take_dmg = true

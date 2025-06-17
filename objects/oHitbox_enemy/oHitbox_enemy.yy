@@ -10,8 +10,8 @@
   "name":"oHitbox_enemy",
   "overriddenProperties":[],
   "parent":{
-    "name":"Attacks",
-    "path":"folders/Objetos/Identity/Enemys/Attacks.yy",
+    "name":"Attack",
+    "path":"folders/Objetos/Identity/Enemys/Generic enemy/Hunter/Attack.yy",
   },
   "parentObjectId":null,
   "persistent":false,

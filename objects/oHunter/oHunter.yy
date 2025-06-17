@@ -8,8 +8,8 @@
   "name":"oHunter",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemys",
-    "path":"folders/Objetos/Identity/Enemys.yy",
+    "name":"Hunter",
+    "path":"folders/Objetos/Identity/Enemys/Generic enemy/Hunter.yy",
   },
   "parentObjectId":{
     "name":"oParEnemys",

@@ -12,8 +12,8 @@
   "name":"oParEnemys",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemys",
-    "path":"folders/Objetos/Identity/Enemys.yy",
+    "name":"Generic enemy",
+    "path":"folders/Objetos/Identity/Enemys/Generic enemy.yy",
   },
   "parentObjectId":null,
   "persistent":false,
