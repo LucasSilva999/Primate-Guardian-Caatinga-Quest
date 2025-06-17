@@ -1,20 +1,4 @@
 event_inherited();
-
-
-//walk var
-destiny_x = 0
-destiny_y = 0
-
-//status var
-damage_value = 1
-poise_max = 10
-life = 2
-
-//hunt var
-dist_aggro= 70
-dist_desaggro=70
-target = noone
-
 state_hunt = new state()
 
 #region State_Ia
@@ -45,8 +29,8 @@ state_ia.running = function()
 #region State_idle
 state_idle.start = function()
 {
-	
-	
+		
+
 	image_index = 0 
 	image_speed = 0
 	
@@ -67,7 +51,7 @@ state_idle.running = function()
 #region State_walk
 state_walk.start = function()
 {
- 
+
  
 	destiny_x = irandom_range(0,room_width)
 	destiny_y = irandom_range(0,room_height)
@@ -76,20 +60,23 @@ state_walk.start = function()
 	
 	
 	
+
+	
 	hspd = lengthdir_x(spd, _dir)
 	vspd = lengthdir_y(spd, _dir)
 
+	
 	image_speed = 1
 	image_index = 0
 	
-
+	
 }
 state_walk.running = function()
 {
 	
-	
-	
 	var _dir = point_direction(x, y, destiny_x,destiny_y)
+	
+	
 
 	
 	if(distance_to_object(oPlayer)<= dist_aggro)
@@ -107,16 +94,25 @@ state_walk.running = function()
 state_attack.start = function()
 {
 	
+	var _dirattack = point_direction(x, y, target.x,target.y) div 90 
 	
-	sprite_index= sHunter_left_attack
+	sprite_index= define_sprite(_dirattack,sHunter_up_attack,sHunter_down_attack,sHunter_right_attack,sHunter_left_attack)
 	image_index=0
 }
 
 state_attack.running = function()
 {
+	var _test = point_direction(x,y,destiny_x,destiny_x) div 90
+	var _dirattack = point_direction(x, y, target.x,target.y) div 90 
+	
+	sprite_index= define_sprite(_dirattack,sHunter_up_attack,sHunter_down_attack,sHunter_right_attack,sHunter_left_attack)
+	
 	if(damage == noone && image_index >= 2)
 	{
-		damage = instance_create_depth(x-20,y,depth,oHitbox_enemy)
+		var _x = x + lengthdir_x(16, (_test + 1) * 90 )
+		var _y = y + lengthdir_y(16, (_test +1) * 90)
+		
+		damage = instance_create_depth(_x,_y,depth,oHitbox_enemy)
 		damage.damage = damage_value
 	}
 	
@@ -247,3 +243,17 @@ state_hunt.running = function()
 
 start_state(state_ia)
 
+
+//walk var
+destiny_x = 0
+destiny_y = 0
+
+//status var
+damage_value = 1
+poise_max = 10
+life = 2
+
+//hunt var
+dist_aggro= 70
+dist_desaggro=70
+target = noone

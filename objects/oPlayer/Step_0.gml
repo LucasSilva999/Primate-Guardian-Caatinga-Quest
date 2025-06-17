@@ -8,7 +8,7 @@ left  = keyboard_check(ord("A")) or gamepad_axis_value(global.gamepad_id,gp_axis
 right = keyboard_check(ord("D")) or gamepad_axis_value(global.gamepad_id,gp_axislh) > global.dzh
 //input de golpes e movimentação
 attack = mouse_check_button_pressed(mb_left) or gamepad_button_check(global.gamepad_id,gp_face3)
-roll = keyboard_check_pressed(vk_shift)
+dash = keyboard_check_pressed(vk_space)
 
 
 

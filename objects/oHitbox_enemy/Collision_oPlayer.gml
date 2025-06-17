@@ -3,12 +3,18 @@
 
 instance_destroy()
 
-oScreenshake.ang = 1
-oScreenshake.value += 2
+
 
 with(other)
 {
-	state_trade(state_hurt)
+	if take_dmg == true
+	{
+		oScreenshake.ang = 1
+		oScreenshake.value += 2
+		
+		state_trade(state_hurt)
 	
-	damage_handler(other.damage)
+		damage_handler(other.damage)	
+		take_dmg = false
+	}
 }

@@ -1,7 +1,7 @@
 /// @description Inserir descrição aqui
 // Você pode escrever seu código neste editor
 #region HUD
-var _scale = 2
+var _scale = 2 
 
 var _guia = display_get_gui_height()
 var _spra = sprite_get_height(sHp_bar) * _scale

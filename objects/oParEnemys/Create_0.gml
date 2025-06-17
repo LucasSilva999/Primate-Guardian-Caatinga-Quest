@@ -4,6 +4,8 @@ randomize()
 life = noone
 poise_max = noone
 dead = false
+
+//var attack
 damage = noone
 damage_value = noone
 
